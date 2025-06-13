@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package electronic_product_v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "common/common.proto";
+
+
+option go_package = "/electronic_product_v1";
+
+service Key{
+  rpc Load(LoadKeyReq) returns (LoadKeyRep){
+    option (google.api.http) = {
+      post: "/key"
+      body: "*"
+    };
+  };
+
+  rpc List(KeyListReq) returns (KeyListRep){
+    option (google.api.http) = {
+      get: "/key"
+    };
+  };
+
+  rpc Get(KeyGetReq) returns (KeyGetRep){
+    option (google.api.http) = {
+      get: "/key/{id}"
+    };
+  };
+
+  rpc Activate(KeyActivateReq) returns (KeyActivateRep){
+    option (google.api.http) = {
+      put: "/key/activate"
+      body: "*"
+    };
+  };
+
+
+  // mdm
+  rpc GetByProductID(GetByProductIDReq) returns (GetByProductIDRep){
+    option (google.api.http) ={
+      get: "/mdm/{product_id}"
+    };
+  }
+
+}
+
+// Load
+message KeyItem {
+  string product_id = 1;
+  string value = 2;
+}
+
+message LoadKeyReq {
+  repeated KeyItem keys = 1;
+}
+
+enum KeyStatus {
+  new = 0;
+  activated = 1;
+}
+
+message KeyResponseItem {
+  string id = 1;
+  string provider_id = 2;
+  string product_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  string customer_phone = 6;
+  KeyStatus status = 7;
+  string order_id = 8;
+
+  string provider_product_id = 9;
+}
+
+message LoadKeyRep {
+  repeated KeyResponseItem keys = 1;
+}
+
+// List
+message KeyListReq {
+  optional string provider_id = 1;
+  optional KeyStatus status = 2;
+  optional string order_id = 3;
+  common.ListParamsSt list_params = 4;
+}
+
+message KeyListRep {
+  repeated KeyResponseItem keys = 1;
+  common.PaginationInfoSt pagination_info = 2;
+}
+
+// Get
+message KeyGetReq {
+  string id = 1;
+}
+
+message KeyGetRep {
+  optional KeyResponseItem key = 1;
+}
+
+// Activate
+message KeyActivateReq {
+  string product_id = 1;
+  string order_id = 2;
+  string customer_phone = 3;
+}
+
+message KeyActivateRep {
+  string value = 1;
+}
+
+
+// methods with external api work
+
+
+// mdm search
+message GetByProductIDReq{
+  string product_id = 1;
+}
+
+message GetByProductIDRep{
+  string product_id = 1;
+  string provider_id = 2;
+  string provider_product_id = 3;
+  string promotion_key = 4;
+}
+
+// providers
+
+message CreateOrderReq {
+  string product_id = 1;
+  string customer_phone = 2;
+  int32 quantity = 3;
+}
+
+message CreateOrderRep {
+  string id = 1;
+  string provider_id = 2;
+  string product_id = 3;
+  string provider_product_id = 4;
+  string order_id = 5;
+  string customer_phone = 6;
+  KeyStatus status = 7;
+}

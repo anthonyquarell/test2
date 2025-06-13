@@ -1,0 +1,448 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "electronic_product/electronic_product_v1.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Key"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/key": {
+      "get": {
+        "operationId": "Key_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1KeyListRep"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "provider_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "new",
+              "activated"
+            ],
+            "default": "new"
+          },
+          {
+            "name": "order_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "list_params.page",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "list_params.page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "list_params.with_total_count",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "list_params.only_count",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "list_params.sort_name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "list_params.sort",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "Key"
+        ]
+      },
+      "post": {
+        "operationId": "Key_Load",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1LoadKeyRep"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1LoadKeyReq"
+            }
+          }
+        ],
+        "tags": [
+          "Key"
+        ]
+      }
+    },
+    "/key/activate": {
+      "put": {
+        "operationId": "Key_Activate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1KeyActivateRep"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1KeyActivateReq"
+            }
+          }
+        ],
+        "tags": [
+          "Key"
+        ]
+      }
+    },
+    "/key/{id}": {
+      "get": {
+        "operationId": "Key_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1KeyGetRep"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Key"
+        ]
+      }
+    },
+    "/mdm/{product_id}": {
+      "get": {
+        "summary": "mdm",
+        "operationId": "Key_GetByProductID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/electronic_product_v1GetByProductIDRep"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Key"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "commonListParamsSt": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "string",
+          "format": "int64"
+        },
+        "page_size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "with_total_count": {
+          "type": "boolean"
+        },
+        "only_count": {
+          "type": "boolean"
+        },
+        "sort_name": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commonPaginationInfoSt": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "string",
+          "format": "int64"
+        },
+        "page_size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "total_count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "electronic_product_v1GetByProductIDRep": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string"
+        },
+        "provider_id": {
+          "type": "string"
+        },
+        "provider_product_id": {
+          "type": "string"
+        },
+        "promotion_key": {
+          "type": "string"
+        }
+      }
+    },
+    "electronic_product_v1KeyActivateRep": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "electronic_product_v1KeyActivateReq": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string"
+        },
+        "order_id": {
+          "type": "string"
+        },
+        "customer_phone": {
+          "type": "string"
+        }
+      },
+      "title": "Activate"
+    },
+    "electronic_product_v1KeyGetRep": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/electronic_product_v1KeyResponseItem"
+        }
+      }
+    },
+    "electronic_product_v1KeyItem": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "Load"
+    },
+    "electronic_product_v1KeyListRep": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/electronic_product_v1KeyResponseItem"
+          }
+        },
+        "pagination_info": {
+          "$ref": "#/definitions/commonPaginationInfoSt"
+        }
+      }
+    },
+    "electronic_product_v1KeyResponseItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "provider_id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customer_phone": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/electronic_product_v1KeyStatus"
+        },
+        "order_id": {
+          "type": "string"
+        },
+        "provider_product_id": {
+          "type": "string"
+        }
+      }
+    },
+    "electronic_product_v1KeyStatus": {
+      "type": "string",
+      "enum": [
+        "new",
+        "activated"
+      ],
+      "default": "new"
+    },
+    "electronic_product_v1LoadKeyRep": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/electronic_product_v1KeyResponseItem"
+          }
+        }
+      }
+    },
+    "electronic_product_v1LoadKeyReq": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/electronic_product_v1KeyItem"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
