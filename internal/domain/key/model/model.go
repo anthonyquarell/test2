@@ -1,0 +1,63 @@
+package model
+
+import (
+	"time"
+
+	commonModel "github.com/mechta-market/e-product/internal/domain/common/model"
+	"github.com/mechta-market/e-product/internal/domain/common/util"
+)
+
+type Main struct {
+	ID                        string
+	CreatedAt                 time.Time
+	UpdatedAt                 time.Time
+	ProviderID                string
+	ProductID                 string
+	Value                     string
+	Status                    string
+	CustomerPhone             string
+	OrderID                   string
+	ProviderProductID         string
+	ProviderExternalProductID string
+	PromotionKey              string
+	ProviderOrderID           string
+}
+
+type ListReq struct {
+	commonModel.ListParams
+
+	ProviderID *string
+	Status     *string
+	OrderID    *string
+	ProductID  *string
+}
+
+type Edit struct {
+	ID                        *string
+	UpdatedAt                 *time.Time
+	ProviderID                *string
+	ProductID                 *string
+	Value                     *string
+	Status                    *string
+	CustomerPhone             *string
+	OrderID                   *string
+	ProviderProductID         *string
+	ProviderExternalProductID *string
+	ProviderOrderID           *string
+}
+
+func (e *Edit) NormalizeAndValidatePhone() bool {
+	if e.CustomerPhone == nil {
+		return false
+	}
+
+	if !util.NormalizeAndValidatePhone(e.CustomerPhone) {
+		return false
+	}
+
+	return true
+}
+
+func (e *Edit) PhonesStr() string {
+	return *e.CustomerPhone
+}

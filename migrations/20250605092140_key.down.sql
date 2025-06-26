@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS key;
+
+DROP TYPE IF EXISTS key_status;
