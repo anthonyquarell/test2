@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package e_product_v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "common/common.proto";
+
+
+option go_package = "/e_product_v1";
+
+service Key{
+  rpc Load(LoadKeyReq) returns (google.protobuf.Empty){
+    option (google.api.http) = {
+      post: "/key"
+      body: "*"
+    };
+  };
+
+  rpc List(KeyListReq) returns (KeyListRep){
+    option (google.api.http) = {
+      get: "/key"
+    };
+  };
+
+  rpc Get(KeyGetReq) returns (KeyResponseItem){
+    option (google.api.http) = {
+      get: "/key/{id}"
+    };
+  };
+
+  rpc Activate(KeyActivateReq) returns (KeyActivateRep){
+    option (google.api.http) ={
+      put: "/key/activate"
+      body: "*"
+    };
+  }
+
+  rpc Cancel(KeyCancelReq) returns (KeyCancelRep){
+    option (google.api.http) ={
+      post: "/key/cancel"
+      body: "*"
+    };
+  }
+
+  rpc Catalog(GetCatalogReq) returns(GetCatalogRep){
+    option (google.api.http) ={
+      get: "/catalog/{provider_id}"
+    };
+  }
+}
+
+// Load
+message KeyItem {
+  string product_id = 1;
+  string value = 2;
+}
+
+message LoadKeyReq {
+  repeated KeyItem keys = 1;
+}
+
+enum KeyStatus {
+  new = 0;
+  activated = 1;
+  cancelled = 2;
+}
+
+message KeyResponseItem {
+  string id = 1;
+  string provider_id = 2;
+  string product_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  string customer_phone = 6;
+  KeyStatus status = 7;
+  string order_id = 8;
+  string provider_product_id = 9;
+  string provider_order_id = 10;
+}
+
+// List
+message KeyListReq {
+  optional string provider_id = 1;
+  optional KeyStatus status = 2;
+  optional string order_id = 3;
+  optional string product_id = 4;
+  common.ListParamsSt list_params = 5;
+}
+
+message KeyListRep {
+  repeated KeyResponseItem keys = 1;
+  common.PaginationInfoSt pagination_info = 2;
+}
+
+// Get
+message KeyGetReq {
+  string id = 1;
+}
+
+//
+
+message KeyActivateReq {
+  string product_id = 1;
+  string customer_phone = 2;
+  string order_id = 3;
+}
+
+message KeyActivateRep {
+  string value = 1;
+}
+
+message KeyCancelReq{
+  string order_id = 1;
+}
+
+message KeyCancelRep{
+  string id = 1;
+}
+
+message GetCatalogReq{
+  string provider_id = 1;
+}
+
+message GetCatalogRep{
+  repeated CatalogItem items = 1;
+}
+
+message CatalogItem{
+  string provider_product_id = 1;
+  string provider_external_product_id = 2;
+  string name = 3;
+  string desc = 4;
+}
